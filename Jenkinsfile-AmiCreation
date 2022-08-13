@@ -45,7 +45,6 @@ pipeline {
                         dir('./packer'){
                             sh  """
                                     #!/bin/bash
-                                    pwd
                                     /usr/bin/packer init firstrun-windows.pkr.hcl; 
                                     /usr/bin/packer build firstrun-windows.pkr.hcl
                                 """

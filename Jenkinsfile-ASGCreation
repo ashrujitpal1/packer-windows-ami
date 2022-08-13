@@ -20,54 +20,16 @@ pipeline {
                     sh "sudo terraform version"
               }
           }
-          stage('Install Packer') {
-              steps {
-                    sh "sudo yum install -y yum-utils"
-                    sh "sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo"
-                    sh "sudo yum -y install packer"
-                    sh "packer version"
-              }
-          }
-          stage('execute shell') {
-              steps {
-                  sh "export PACKER_LOG=1"
-                  sh "export PACKER_LOG_PATH=$WORKSPACE/packer.log"
-              }
-          }
             stage('code checkout') {
                steps {
                     git branch: 'main', url: 'https://github.com/ashrujitpal1/packer-windows-ami.git'
                     }
           }
-          stage('Build Windows AMI') {
-                steps {
-                    withAWS(credentials: 'Ashrujit-DevOps', region: 'us-east-1') {
-                        dir('./packer'){
-                            sh  """
-                                    #!/bin/bash
-                                    pwd
-                                    /usr/bin/packer init firstrun-windows.pkr.hcl; 
-                                    /usr/bin/packer build firstrun-windows.pkr.hcl
-                                """
-                    }
-                }
-            }
-          }
-          /*stage('Deploy??') {
-                steps {
-                    script {
-                       withAWS(credentials: 'Ashrujit-DevOps', region: 'us-east-1') { 
-                       timeout(time: 2, unit: 'MINUTES') {
-                          input(id: "Deploy Gate", message: "Want to Deploy ${params.project_name}?", ok: 'Deploy??')
-                       }
-                       }
-                    }
-                }
-          }
+          
          stage('Terraform Deploy'){
              steps {
                 withAWS(credentials: 'Ashrujit-DevOps', region: 'us-east-1') {
-                 dir('./terraform'){
+                 dir('./asg-creation'){
 
                  sh  """
                      terraform init; terraform plan; terraform apply -auto-approve
@@ -76,6 +38,6 @@ pipeline {
                  }
                 }
              }
-         }*/
+         }
     }
 }
