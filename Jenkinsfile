@@ -41,7 +41,9 @@ pipeline {
                 steps {
                     withAWS(credentials: 'Ashrujit-DevOps', region: 'us-east-1') {
                         dir('./packer'){
-                        sh 'ls -la; pwd; packer init firstrun-windows.pkr.hcl; packer build firstrun-windows.pkr.hcl'
+                            sh  """
+                                    packer init firstrun-windows.pkr.hcl; packer build firstrun-windows.pkr.hcl
+                                """
                     }
                 }
             }
