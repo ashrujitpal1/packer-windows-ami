@@ -33,7 +33,7 @@ pipeline {
 
                  sh  """
                      terraform init 
-                     terraform plan -state=terraform.tfstate" 
+                     terraform plan -state="terraform.tfstate" 
                      terraform apply -auto-approve
                      """
 
