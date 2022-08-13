@@ -8,6 +8,13 @@ pipeline {
         packer_version = '1.8.3'
     }
     stages {
+        stage('execute shell') {
+              steps {
+                  sh  "export PACKER_LOG=1"
+                  sh "export PACKER_LOG_PATH=$WORKSPACE/packer.log"
+                  sh "echo "packer log path:" $PACKER_LOG_PATH"
+              }
+          }
           stage('Install Terraform') {
               steps {
                     sh "sudo yum install wget zip -y"
