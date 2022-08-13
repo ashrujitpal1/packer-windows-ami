@@ -1,7 +1,7 @@
 pipeline {
     agent any
     parameters {
-        string(name: 'project_name', defaultValue: 'Packer Pipeline', description: 'Jenkins Pipeline for Packer')
+        string(name: 'project_name', defaultValue: 'ASG Pipeline', description: 'Jenkins Pipeline for Packer')
     }
     environment {
         terraform_version = '1.2.7'
@@ -35,7 +35,7 @@ pipeline {
                      terraform init; terraform plan; terraform apply -auto-approve
                      """
 
-                 }
+                   }
                 }
              }
          }
