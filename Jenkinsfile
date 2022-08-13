@@ -30,9 +30,9 @@ pipeline {
           }
           stage('execute shell') {
               steps {
-                  sh  "export PACKER_LOG=1"
+                  sh "export PACKER_LOG=1"
                   sh "export PACKER_LOG_PATH=$WORKSPACE/packer.log"
-                  sh "echo "packer log path:" $PACKER_LOG_PATH"
+                  sh "echo packer log path: $PACKER_LOG_PATH"
               }
           }
             stage('code checkout') {
