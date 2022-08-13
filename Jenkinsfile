@@ -8,13 +8,6 @@ pipeline {
         packer_version = '1.8.3'
     }
     stages {
-        stage('execute shell') {
-              steps {
-                  sh  "export PACKER_LOG=1"
-                  sh "export PACKER_LOG_PATH=$WORKSPACE/packer.log"
-                  sh "echo "packer log path:" $PACKER_LOG_PATH"
-              }
-          }
           stage('Install Terraform') {
               steps {
                     sh "sudo yum install wget zip -y"
@@ -33,6 +26,13 @@ pipeline {
                     sh "sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo"
                     sh "sudo yum -y install packer"
                     sh "packer version"
+              }
+          }
+          stage('execute shell') {
+              steps {
+                  sh  "export PACKER_LOG=1"
+                  sh "export PACKER_LOG_PATH=$WORKSPACE/packer.log"
+                  sh "echo "packer log path:" $PACKER_LOG_PATH"
               }
           }
             stage('code checkout') {
