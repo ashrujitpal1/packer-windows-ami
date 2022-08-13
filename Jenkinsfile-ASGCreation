@@ -32,7 +32,9 @@ pipeline {
                  dir('./asg-complete/asg'){
 
                  sh  """
-                     terraform init; terraform apply -auto-approve
+                     terraform init 
+                     terraform plan -backend-config="bucket=ashrujit-terraform-state" -backend-config="key=demo.tfstate 
+                     terraform apply -auto-approve
                      """
 
                    }
