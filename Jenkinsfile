@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { docker { image 'hashicorp/packer:1.7.10' } }
     parameters {
         string(name: 'project_name', defaultValue: 'Packer Pipeline', description: 'Jenkins Pipeline for Packer')
     }
@@ -20,7 +20,7 @@ pipeline {
                     sh "sudo terraform version"
               }
           }
-          stage('Install Packer') {
+          /*stage('Install Packer') {
               steps {
                     sh "sudo yum install -y yum-utils"
                     sh "sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo"
@@ -33,13 +33,13 @@ pipeline {
                   sh "export PACKER_LOG=1"
                   sh "export PACKER_LOG_PATH=$WORKSPACE/packer.log"
               }
-          }
+          }*/
             stage('code checkout') {
                steps {
                     git branch: 'main', url: 'https://github.com/ashrujitpal1/packer-windows-ami.git'
                     }
           }
-          /*stage('Build Windows AMI') {
+          stage('Build Windows AMI') {
                 steps {
                     withAWS(credentials: 'Ashrujit-DevOps', region: 'us-east-1') {
                         dir('./packer'){
@@ -52,22 +52,7 @@ pipeline {
                     }
                 }
             }
-          }*/
-          stage('building golden ami using packer') {
-            steps {
-                withCredentials([[
-                $class: 'AmazonWebServicesCredentialsBinding',
-                accessKeyVariable: 'AWS_ACCESS_KEY_ID', // dev credentials
-                credentialsId: 'Ashrujit-DevOps',
-                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-                ]]){
-                    sh '''
-
-                        packer init -var "aws_access_key=$($ENV:AWS_ACCESS_KEY_ID)" -var "aws_secret_key=$($ENV:AWS_SECRET_ACCESS_KEY)" firstrun-windows.pkr.hcl
-                    '''
-                }
-            }
-        }
+          }
           /*stage('Deploy??') {
                 steps {
                     script {
