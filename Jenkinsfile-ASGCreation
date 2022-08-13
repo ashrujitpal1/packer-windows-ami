@@ -33,7 +33,7 @@ pipeline {
 
                  sh  """
                      terraform init 
-                     terraform plan -backend-config="bucket=ashrujit-terraform-state" -backend-config="key=demo.tfstate 
+                     terraform plan -backend-config="bucket=ashrujit-terraform-state" -backend-config="key=demo.tfstate" 
                      terraform apply -auto-approve
                      """
 
