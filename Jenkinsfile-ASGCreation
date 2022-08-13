@@ -32,7 +32,7 @@ pipeline {
                  dir('./asg-complete/asg'){
 
                  sh  """
-                     terraform init; terraform plan; terraform apply -auto-approve
+                     terraform init; terraform apply -auto-approve
                      """
 
                    }
