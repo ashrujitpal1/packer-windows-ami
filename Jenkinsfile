@@ -39,22 +39,34 @@ pipeline {
                     git branch: 'main', url: 'https://github.com/ashrujitpal1/packer-windows-ami.git'
                     }
           }
-          stage('Build Windows AMI') {
+          /*stage('Build Windows AMI') {
                 steps {
                     withAWS(credentials: 'Ashrujit-DevOps', region: 'us-east-1') {
                         dir('./packer'){
                             sh  """
                                     #!/bin/bash
                                     pwd
-                                    $rootdir = (Resolve-Path .\\).Path
-                                    Set-Location $rootdir\\packer
                                     packer init firstrun-windows.pkr.hcl; 
                                     packer build firstrun-windows.pkr.hcl
                                 """
                     }
                 }
             }
-          }
+          }*/
+          stage('building golden ami using packer') {
+            steps {
+                withCredentials([[
+                $class: 'AmazonWebServicesCredentialsBinding',
+                accessKeyVariable: 'AWS_ACCESS_KEY_ID', // dev credentials
+                credentialsId: 'Ashrujit-DevOps',
+                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                ]]){
+                    sh """
+                        packer init -var "aws_access_key=$($ENV:AWS_ACCESS_KEY_ID)" -var "aws_secret_key=$($ENV:AWS_SECRET_ACCESS_KEY)" firstrun-windows.pkr.hcl
+                    """
+                }
+            }
+        }
           /*stage('Deploy??') {
                 steps {
                     script {
