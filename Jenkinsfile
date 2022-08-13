@@ -43,7 +43,7 @@ pipeline {
                         dir('./packer'){
                             sh  """
                                     #!/bin/bash
-                                    cd packer-windows-ami
+                                    pwd
                                     packer init firstrun-windows.pkr.hcl; 
                                     packer build firstrun-windows.pkr.hcl
                                 """
