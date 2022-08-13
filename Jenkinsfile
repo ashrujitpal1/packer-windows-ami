@@ -1,5 +1,5 @@
 pipeline {
-    agent { docker { image 'hashicorp/packer:1.7.10' } }
+    agent any
     parameters {
         string(name: 'project_name', defaultValue: 'Packer Pipeline', description: 'Jenkins Pipeline for Packer')
     }
@@ -20,7 +20,7 @@ pipeline {
                     sh "sudo terraform version"
               }
           }
-          /*stage('Install Packer') {
+          stage('Install Packer') {
               steps {
                     sh "sudo yum install -y yum-utils"
                     sh "sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo"
@@ -33,7 +33,7 @@ pipeline {
                   sh "export PACKER_LOG=1"
                   sh "export PACKER_LOG_PATH=$WORKSPACE/packer.log"
               }
-          }*/
+          }
             stage('code checkout') {
                steps {
                     git branch: 'main', url: 'https://github.com/ashrujitpal1/packer-windows-ami.git'
@@ -46,8 +46,8 @@ pipeline {
                             sh  """
                                     #!/bin/bash
                                     pwd
-                                    packer init firstrun-windows.pkr.hcl; 
-                                    packer build firstrun-windows.pkr.hcl
+                                    /usr/bin/packer init firstrun-windows.pkr.hcl; 
+                                    /usr/bin/packer build firstrun-windows.pkr.hcl
                                 """
                     }
                 }
