@@ -8,7 +8,7 @@ pipeline {
         packer_version = '1.8.3'
     }
     stages {
-          stage('Install Terraform') {
+          /*stage('Install Terraform') {
               steps {
                     sh "sudo yum install wget zip -y"
                     sh "sudo cd /tmp"
@@ -31,7 +31,7 @@ pipeline {
                     sh "rm -rf bin_packer.zip"
                     sh "packer version"
               }
-          }
+          }*/
             stage('code checkout') {
                steps {
                     git branch: 'main', url: 'https://github.com/ashrujitpal1/packer-windows-ami.git'
@@ -43,7 +43,7 @@ pipeline {
                         dir('./packer'){
                             sh  """
                                     #!/bin/bash
-                                    pwd
+                                    packer version
                                     packer init firstrun-windows.pkr.hcl; 
                                     packer build firstrun-windows.pkr.hcl
                                 """
