@@ -46,6 +46,8 @@ pipeline {
                             sh  """
                                     #!/bin/bash
                                     pwd
+                                    $rootdir = (Resolve-Path .\\).Path
+                                    Set-Location $rootdir\\packer
                                     packer init firstrun-windows.pkr.hcl; 
                                     packer build firstrun-windows.pkr.hcl
                                 """
