@@ -29,7 +29,7 @@ pipeline {
          stage('Terraform Deploy'){
              steps {
                 withAWS(credentials: 'Ashrujit-DevOps', region: 'us-east-1') {
-                 dir('./asg-creation'){
+                 dir('./asg-complete/asg'){
 
                  sh  """
                      terraform init; terraform plan; terraform apply -auto-approve
