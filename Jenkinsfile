@@ -61,9 +61,10 @@ pipeline {
                 credentialsId: 'Ashrujit-DevOps',
                 secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                 ]]){
-                    sh """
+                    sh '''
+
                         packer init -var "aws_access_key=$($ENV:AWS_ACCESS_KEY_ID)" -var "aws_secret_key=$($ENV:AWS_SECRET_ACCESS_KEY)" firstrun-windows.pkr.hcl
-                    """
+                    '''
                 }
             }
         }
