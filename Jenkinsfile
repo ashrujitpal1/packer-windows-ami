@@ -8,7 +8,7 @@ pipeline {
         packer_version = '1.8.3'
     }
     stages {
-          /*stage('Install Terraform') {
+          stage('Install Terraform') {
               steps {
                     sh "sudo yum install wget zip -y"
                     sh "sudo cd /tmp"
@@ -22,16 +22,12 @@ pipeline {
           }
           stage('Install Packer') {
               steps {
-                    sh "sudo yum install wget zip -y"
-                    sh "cd /tmp"
-                    sh "curl -o bin_packer.zip https://releases.hashicorp.com/packer/$packer_version/packer_'$packer_version'_linux_amd64.zip"
-                    sh "sudo rm -rf packer/"
-                    sh "sudo unzip bin_packer.zip"
-                    sh "sudo mv packer /usr/bin"
-                    sh "rm -rf bin_packer.zip"
+                    sh "sudo yum install -y yum-utils"
+                    sh "sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo"
+                    sh "sudo yum -y install packer"
                     sh "packer version"
               }
-          }*/
+          }
             stage('code checkout') {
                steps {
                     git branch: 'main', url: 'https://github.com/ashrujitpal1/packer-windows-ami.git'
@@ -43,7 +39,7 @@ pipeline {
                         dir('./packer'){
                             sh  """
                                     #!/bin/bash
-                                    packer version
+                                    pwd
                                     packer init firstrun-windows.pkr.hcl; 
                                     packer build firstrun-windows.pkr.hcl
                                 """
