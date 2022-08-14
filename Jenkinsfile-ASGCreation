@@ -7,7 +7,22 @@ pipeline {
         terraform_version = '1.2.7'
         packer_version = '1.8.3'
     }
-      stages {  
+
+
+    stage('Terraform Deploy'){
+        steps {
+        withAWS(credentials: 'Ashrujit-DevOps', region: 'us-east-1') {
+            dir('./terraform'){
+
+            sh  """
+                terraform init; terraform plan; terraform apply -auto-approve
+                """
+
+                }
+            }
+        }
+        }
+      /*stages {  
         stage('Terraform Apply') {
 
                 dir('./terraform'){
@@ -17,5 +32,5 @@ pipeline {
                 }
             
         }
-    }
+    }*/
 }
