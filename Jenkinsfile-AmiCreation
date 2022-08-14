@@ -8,7 +8,7 @@ pipeline {
         packer_version = '1.8.3'
     }
     stages {
-          stage('Install Terraform') {
+          /*stage('Install Terraform') {
               steps {
                     sh "sudo yum install wget zip -y"
                     sh "sudo cd /tmp"
@@ -19,7 +19,7 @@ pipeline {
                     sh "sudo rm -rf bin_terraform.zip"
                     sh "sudo terraform version"
               }
-          }
+          }*/
           stage('Install Packer') {
               steps {
                     sh "sudo yum install -y yum-utils"
@@ -44,15 +44,22 @@ pipeline {
                     withAWS(credentials: 'Ashrujit-DevOps', region: 'us-east-1') {
                         dir('./packer'){
                             sh  """
-                                    #!/bin/bash
-                                    /usr/bin/packer init firstrun-windows.pkr.hcl;
-                                    /usr/bin/packer build firstrun-windows.pkr.hcl 2>&1 | sudo tee output.txt
                                     
-                                    export MYVAR=\$(tail -2 output.txt | head -2 | awk 'match(\$0, /ami-.*/) { print substr(\$0, RSTART, RLENGTH) }')
+                                    export MYVAR= "ami-045e0e146e274e824"
                                 """
                     }
                 }
             }
+          }
+          stage('Push AMI Id intoo Parameter Store') {
+               steps {
+                    withAWSParameterStore(credentialsId: 'Ashrujit-DevOps', 
+                    namePrefixes: 'ami-id', 
+                    regionName: 'us-east-1') { 
+                            echo "${env.MYVAR}" 
+                            }
+
+                    }
           }
           /*stage('Deploy??') {
                 steps {
