@@ -39,20 +39,30 @@ pipeline {
                     git branch: 'main', url: 'https://github.com/ashrujitpal1/packer-windows-ami.git'
                     }
           }
-          stage('Build Windows AMI') {
+            stage('Build Windows AMI') {
                 steps {
                     withAWS(credentials: 'Ashrujit-DevOps', region: 'us-east-1') {
                         dir('./packer'){
                             sh  """
                                     #!/bin/bash
                                     /usr/bin/packer init firstrun-windows.pkr.hcl; 
-                                    /usr/bin/packer build firstrun-windows.pkr.hcl 2>&1 | sudo tee output.txt
-                                    tail -2 output.txt | head -2 | awk 'match(\$0, /ami-.*/) { print substr(\$0, RSTART, RLENGTH) }' > sudo ami.txt
-                                    cat ami.txt
+                                    # run packer (prints to stdout, but stores the output in a variable)
+                                    packer_out=$(/usr/bin/packer build firstrun-windows.pkr.hcl | tee /dev/tty)
+
+                                    # packer prints the id of the generated AMI in its last line
+                                    ami=$(echo "\$packer_out" | tail -c 30 | perl -n -e'/: (ami-.+)$/ && print \$1')
+
+                                    # create the 'ami.tf' file from the template:
+                                    export AMI_GENERATED_BY_PACKER="\$ami"
                                 """
                     }
                 }
             }
+          }
+          stage('Refresh Parameter Store') {
+               steps {
+                        sh 'echo $AMI_GENERATED_BY_PACKER'
+                    }
           }
           /*stage('Deploy??') {
                 steps {
