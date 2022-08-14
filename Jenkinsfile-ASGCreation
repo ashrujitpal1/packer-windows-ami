@@ -16,9 +16,12 @@ pipeline {
                 withAWS(credentials: 'Ashrujit-DevOps', region: 'us-east-1') {
                  dir('./terraform'){
 
-                 sh 'pwd'
+                    sh 'pwd'
+                    sh 'cat vpc.tf'
+                    sh 'terraform init'
+                    sh 'terraform apply -auto-approve'
 
-                 }
+                  }
                 }
              }
          }
