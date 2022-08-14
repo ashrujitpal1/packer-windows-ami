@@ -44,37 +44,15 @@ pipeline {
                     withAWS(credentials: 'Ashrujit-DevOps', region: 'us-east-1') {
                         dir('./packer'){
                             sh """
-                            export MYVAR=ami-045e0e146e274e824
+                            #!/bin/bash
+                            /usr/bin/packer init firstrun-windows.pkr.hcl;
+                            /usr/bin/packer build firstrun-windows.pkr.hcl 2>&1 | sudo tee output.txt
+                            export MYVAR=\$(tail -2 output.txt | head -2 | awk 'match(\$0, /ami-.*/) { print substr(\$0, RSTART, RLENGTH) }')
                             aws ssm put-parameter --name 'ami-id' --value \$MYVAR --type String --overwrite
                             """
                     }
                 }
             }
           }
-          
-          /*stage('Deploy??') {
-                steps {
-                    script {
-                       withAWS(credentials: 'Ashrujit-DevOps', region: 'us-east-1') { 
-                       timeout(time: 2, unit: 'MINUTES') {
-                          input(id: "Deploy Gate", message: "Want to Deploy ${params.project_name}?", ok: 'Deploy??')
-                       }
-                       }
-                    }
-                }
-          }
-         stage('Terraform Deploy'){
-             steps {
-                withAWS(credentials: 'Ashrujit-DevOps', region: 'us-east-1') {
-                 dir('./terraform'){
-
-                 sh  """
-                     terraform init; terraform plan; terraform apply -auto-approve
-                     """
-
-                 }
-                }
-             }
-         }*/
     }
 }
