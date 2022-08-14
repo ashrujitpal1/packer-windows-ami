@@ -43,10 +43,7 @@ pipeline {
                 steps {
                     withAWS(credentials: 'Ashrujit-DevOps', region: 'us-east-1') {
                         dir('./packer'){
-                            sh  """
-                                    
-                                    export MYVAR= 'ami-045e0e146e274e824'
-                                """
+                            sh "export MYVAR=ami-045e0e146e274e824"
                     }
                 }
             }
