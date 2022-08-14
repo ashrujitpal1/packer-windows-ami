@@ -46,8 +46,7 @@ pipeline {
                             sh  """
                                     #!/bin/bash
                                     /usr/bin/packer init firstrun-windows.pkr.hcl;
-                                    # run packer (prints to stdout, but stores the output in a variable)
-                                    packer_out=$(/usr/bin/packer build firstrun-windows.pkr.hcl | tee /dev/tty)
+                                    packer_out=\$(/usr/bin/packer build firstrun-windows.pkr.hcl | tee /dev/tty)
 
                                 """
                     }
