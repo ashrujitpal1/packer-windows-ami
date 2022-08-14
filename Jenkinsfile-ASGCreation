@@ -7,18 +7,14 @@ pipeline {
         terraform_version = '1.2.7'
         packer_version = '1.8.3'
     }
-    
-    stages {
-        
-        stage('Terraform Init') {
-            steps {
-                sh 'terraform init'
-            }
-        }
         
         stage('Terraform Apply') {
             steps {
-                sh 'terraform apply --auto-approve'
+                dir('./terraform'){
+                    pwd 
+                    sh 'terraform init'   
+                    sh 'terraform apply --auto-approve'
+                }
             }
         }
     }
