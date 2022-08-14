@@ -52,7 +52,7 @@ pipeline {
                steps {
                 withAWS(credentials: 'Ashrujit-DevOps', region: 'us-east-1') {
                         
-                            sh "aws ssm put-parameter --name 'ami-id' --value \$MYVAR --type String"
+                            sh "aws ssm put-parameter --name 'ami-id' --value $MYVAR --type String"
                     }
                 }    
           }
