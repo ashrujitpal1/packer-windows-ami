@@ -47,7 +47,7 @@ pipeline {
                                     #!/bin/bash
                                     /usr/bin/packer init firstrun-windows.pkr.hcl; 
                                     /usr/bin/packer build firstrun-windows.pkr.hcl 2>&1 | sudo tee output.txt
-                                    tail -2 output.txt | head -2 | awk 'match($0, /ami-.*/) { print substr($0, RSTART, RLENGTH) }' > sudo ami.txt
+                                    tail -2 output.txt | head -2 | awk 'match(\$0, /ami-.*/) { print substr(\$0, RSTART, RLENGTH) }' > sudo ami.txt
                                     cat ami.txt
                                 """
                     }
