@@ -7,39 +7,19 @@ pipeline {
         terraform_version = '1.2.7'
         packer_version = '1.8.3'
     }
+    
     stages {
-          stage('Install Terraform') {
-              steps {
-                    sh "sudo yum install wget zip -y"
-                    sh "sudo cd /tmp"
-                    sh "sudo curl -o bin_terraform.zip https://releases.hashicorp.com/terraform/'$terraform_version'/terraform_'$terraform_version'_linux_amd64.zip"
-                    sh "sudo rm -rf terraform/"
-                    sh "sudo ls -l; pwd;sudo unzip -o bin_terraform.zip"
-                    sh "sudo mv terraform /usr/bin"
-                    sh "sudo rm -rf bin_terraform.zip"
-                    sh "sudo terraform version"
-              }
-          }
-            stage('code checkout') {
-               steps {
-                    git branch: 'main', url: 'https://github.com/ashrujitpal1/packer-windows-ami.git'
-                    }
-          }
-          
-         stage('Terraform Deploy'){
-             steps {
-                withAWS(credentials: 'Ashrujit-DevOps', region: 'us-east-1') {
-                 dir('./asg-complete/asg'){
-
-                 sh  """
-                     terraform init 
-                     terraform plan 
-                     terraform apply -auto-approve
-                     """
-
-                   }
-                }
-             }
-         }
+        
+        stage('Terraform Init') {
+            steps {
+                sh 'terraform init'
+            }
+        }
+        
+        stage('Terraform Apply') {
+            steps {
+                sh 'terraform apply --auto-approve'
+            }
+        }
     }
 }
