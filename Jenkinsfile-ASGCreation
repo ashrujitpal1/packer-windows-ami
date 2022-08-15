@@ -17,8 +17,7 @@ pipeline {
                  dir('./terraform'){
                     sh 'terraform init'
                     sh 'terraform destroy'
-                    #sh 'terraform apply -auto-approve'
-
+                    
                   }
                 }
              }
