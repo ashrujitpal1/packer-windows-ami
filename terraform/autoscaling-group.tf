@@ -1,4 +1,5 @@
 resource "aws_autoscaling_group" "demo" {
+    name = "cma-cgm-ecommerce"
     launch_configuration = aws_launch_configuration.demo.name
     vpc_zone_identifier = ["subnet-0820b2d09794f06a9", "subnet-04169f14f7ee86ab3"]
 
