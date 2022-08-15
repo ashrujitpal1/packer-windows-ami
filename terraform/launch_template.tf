@@ -15,7 +15,7 @@ resource "aws_launch_template" "demo" {
 
   vpc_security_group_ids = [aws_security_group.web-security.id]
 
-  user_data = "${file(userdata.sh)}"
+  user_data = "$file{(${path.module}/terraform/userdata.sh)}"
 
   tag_specifications {
     resource_type = "instance"
