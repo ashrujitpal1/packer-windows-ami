@@ -11,8 +11,6 @@ resource "aws_launch_template" "demo" {
 
   image_id = "ami-045c09ab581c1ccd6"
 
-  instance_initiated_shutdown_behavior = "terminate"
-
   instance_type = "t2.micro"
 
   vpc_security_group_ids = [aws_security_group.web-security.id]
