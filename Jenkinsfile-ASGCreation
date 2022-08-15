@@ -16,7 +16,7 @@ pipeline {
                 withAWS(credentials: 'Ashrujit-DevOps', region: 'us-east-1') {
                  dir('./terraform'){
                     sh 'terraform init'
-                    sh 'terraform destroy --auto-aaprove'
+                    sh 'terraform destroy --auto-approve'
                     
                   }
                 }
