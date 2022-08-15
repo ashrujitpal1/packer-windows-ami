@@ -49,8 +49,8 @@ pipeline {
                             #/usr/bin/packer build firstrun-windows.pkr.hcl 2>&1 | sudo tee output.txt
                             #export MYVAR=\$(tail -2 output.txt | head -2 | awk 'match(\$0, /ami-.*/) { print substr(\$0, RSTART, RLENGTH) }')
                             export MYVAR='ami-0ba2c2f0af37767079'
-                            aws ssm delete-parameter --name '/Ami-Ids/ami-id' 
-                            aws ssm put-parameter --name '/Ami-Ids/ami-id' --value \$MYVAR --type String --tier Standard
+                            aws ssm delete-parameter --name 'ami-id' 
+                            aws ssm put-parameter --name 'ami-id' --value \$MYVAR --type String --tier Standard
                             """
                     }
                 }
