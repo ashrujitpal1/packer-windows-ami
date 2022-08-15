@@ -139,13 +139,13 @@ def lambda_handler(event, context):
     ## Get ASG Name           
     asg_name = os.environ['WebServerASGName']
     ## Get LT from ASG
-    ##lt_id = get_launch_template_id(asg_name)
-    lt_id = get_launch_configuration_id(asg_name)
+    lt_id = get_launch_template_id(asg_name)
+    ##lt_id = get_launch_configuration_id(asg_name)
     if lt_id is None:
         raise ValueError("No Launch template found in ASG: {}".format(asg_name))
 
     ## Update LT
-    new_version_id = create_new_launch_configuration(lt_id,ami_id)
+    new_version_id = create_new_launch_template(lt_id,ami_id)
     ## Trigger Instance Refresh
     start_asg_instance_refresh(asg_name)
     return {
