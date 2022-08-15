@@ -16,7 +16,7 @@ pipeline {
                 withAWS(credentials: 'Ashrujit-DevOps', region: 'us-east-1') {
                  dir('./terraform'){
                     sh 'terraform init'
-                    sh 'terraform aaply -auto-approve'
+                    sh 'terraform apply -auto-approve'
 
                   }
                 }
